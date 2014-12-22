@@ -1,3 +1,5 @@
+import random
+
 triangle = """75
 95 64
 17 47 82
@@ -16,9 +18,52 @@ triangle = """75
 
 triangle_array = [i.split(' ') for i in triangle.split('\n')]
 
-triangle_rank = {}
+def possible_paths(max_num, arrays):
+	array = []
+	for i in range(max_num):
+		if i == 0:
+			array.append(0)
+		else:
+			array.append(random.randint(array[i-1], array[i-1] + 1))
+	if array not in arrays:
+		arrays.append(array)
 
-for i in range(len(triangle_array)):
-	for n in range(len(triangle_array[i])):
-		triangle_rank[(i, n)] = triangle_array[i][n]
+arrays = []
+for i in range(200000):
+	possible_paths(15, arrays)
 
+print len(arrays)
+
+totals = []
+
+for array in arrays:
+	total = 0
+	for i in range(len(array)):
+		total += int(triangle_array[i][array[i]])
+	totals.append(total)
+
+totals.sort(reverse=True)
+print totals[:9]
+
+# def one_path(triangle_array, row_num, i):
+# 	total = 0
+# 	if row_num == len(triangle_array):
+# 		return total
+# 	else:
+# 		total += int(triangle_array[row_num][i])
+# 		row_num += 1
+# 		one_path(triangle_array, row_num, i)
+			
+# print one_path(triangle_array, 0, 0)
+
+
+# def all_paths(triangle_array):
+# 	sums = []
+# 	total = 0
+# 	for row in triangle_array:
+		
+
+
+# # for i in range(len(triangle_array)):
+# # 	for n in range(len(triangle_array[i])):
+# # 		triangle_rank[(i, n)] = triangle_array[i][n]
