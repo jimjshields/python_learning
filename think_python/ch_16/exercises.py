@@ -161,13 +161,60 @@ race_time.second = 40
 # print_time(avg_pace(race_time, 3.1))
 
 # ex 7
-import datetime
+from datetime import date, timedelta
 
 def current_day():
 	WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 	return WEEKDAYS[datetime.date.today().weekday()]
 
 def age_and_birthday(birthday):
-	age = datetime.date.today().year - birthday.year
+	today = date.today()
+	age = today.year - birthday.year - ((today.month, today.day) < (birthday.month, birthday.day))
 
-print age_and_birthday
+	if (today.month, today.day) > (birthday.month, birthday.day):
+		next_birthday = date(today.year + 1, birthday.month, birthday.day)
+	else:
+		next_birthday = date(today.year, birthday.month, birthday.day)
+	until_next = next_birthday - today
+
+	minutes = int(until_next.total_seconds() / 60)
+	hours = int(minutes / 60)
+	return """
+			Age: %s
+			Until next birthday:
+			Days: %s
+			Hours: %s
+			Minutes: %s
+			Seconds: %s
+			""" % (age, until_next.days, hours, minutes, int(until_next.total_seconds()))
+
+birthday = date(1989, 2, 15)
+
+# age_and_birthday(birthday)
+
+def double_day(bday1, bday2):
+	assert bday1 != bday2, "They have the same birthday!"
+	earlier = bday1 if bday1 < bday2 else bday2
+	later = bday1 if bday1 > bday2 else bday2
+
+	day_diff = (later - earlier).days
+
+	the_date = earlier + timedelta(day_diff * 2)
+	return the_date
+		
+		
+
+birthday2 = date(1995, 10, 15)
+
+# print double_day(birthday, birthday2)
+
+def n_day(bday1, bday2, n):
+	assert bday1 != bday2, "They have the same birthday!"
+	earlier = bday1 if bday1 < bday2 else bday2
+	later = bday1 if bday1 > bday2 else bday2
+
+	day_diff = (later - earlier).days
+
+	the_date = earlier + timedelta(day_diff/(n-1))
+	return the_date
+
